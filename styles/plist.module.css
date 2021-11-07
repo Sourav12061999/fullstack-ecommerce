@@ -1,0 +1,7 @@
+.list {
+  width: 90%;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 24% 24% 24% 24%;
+  gap: 1.3%;
+}

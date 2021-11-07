@@ -1,0 +1,94 @@
+.body {
+  width: 100vw;
+  height: calc(100vh - 160px);
+  background-color: teal;
+  padding-top: 70px;
+}
+.main {
+  width: 24%;
+  margin: auto;
+}
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flipcard {
+  background-color: transparent;
+  width: 100%;
+  height: 270px;
+  /* border: 1px solid #f1f1f1; */
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flipcardinner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+/* .flipcard:hover .flipcardinner {
+    transform: rotateY(180deg);
+  } */
+
+/* Position the front and back side */
+.flipcardfront,
+.flipcardback {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  border-radius: 10px;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flipcardfront {
+  background-color: white;
+  color: black;
+}
+
+/* Style the back side */
+.flipcardback {
+  background-color: white;
+  transform: rotateY(180deg);
+}
+.flipcardfront > input {
+  width: 80%;
+  display: block;
+  margin: 10px auto;
+  height: 30px;
+  border: 1px solid rgb(226, 226, 226);
+}
+.flipcardfront > button {
+  width: 30%;
+  font-size: 20px;
+  margin: 20px 0px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 2px 0px;
+}
+.flipcardfront > p:hover {
+  cursor: pointer;
+}
+.flipcardback > input {
+  width: 80%;
+  display: block;
+  margin: 10px auto;
+  height: 30px;
+  border: 1px solid rgb(226, 226, 226);
+}
+.flipcardback > button {
+  width: 30%;
+  font-size: 20px;
+  margin: 20px 0px;
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 2px 0px;
+}
+.flipcardback > p:hover {
+  cursor: pointer;
+}

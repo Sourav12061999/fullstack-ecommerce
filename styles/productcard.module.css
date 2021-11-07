@@ -1,0 +1,25 @@
+.productcard {
+  height: 400px;
+}
+.productcard > div:nth-child(1) {
+  height: 70%;
+  width: 100%;
+  margin-bottom: 5%;
+}
+.productcard > div > div {
+  width: 100%;
+  height: 100%;
+  /* border: 1px solid red; */
+}
+.productcard > div > div:hover {
+  cursor: pointer;
+}
+.productcard img {
+  height: 100%;
+  display: block;
+  margin: auto;
+}
+.productcard p {
+  display: block;
+  text-align: center;
+}
