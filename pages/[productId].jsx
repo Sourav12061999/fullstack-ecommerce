@@ -6,12 +6,15 @@ import {
   doc,
   addDoc,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/dist/client/router";
 import { db } from "../firebase";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import styles from "../styles/productdetails.module.css";
+import { Context1 } from "./_app";
 function Productdetails() {
+  const signed = useContext(Context1);
   const router = useRouter();
   const { productId } = router.query;
   const [data, setdata] = useState({});
@@ -22,7 +25,6 @@ function Productdetails() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setdata(docSnap.data());
-          console.log(data);
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -32,14 +34,14 @@ function Productdetails() {
     getData();
   }, [productId]);
   async function addToCart() {
-    if (db && doc) {
-      const cartRef = collection(db, "Carts");
-      const q = query(cartRef, where("productId", "==", productId));
-      const querySnapshot = await getDocs(q);
-      if (querySnapshot.empty) {
-        // console.log({ ...data,productId});
-        await addDoc(cartRef, { ...data, productId, quantity: 1 });
-      }
+    if (!signed) {
+      router.replace("/signin");
+    } else {
+      const docRef = doc(db, "users", signed.id);
+      const docSnap = await getDoc(docRef);
+      let d = docSnap.data().cart;
+      d.push({ ...data, quantity: 1 });
+      await updateDoc(docRef, { ...signed, cart: d });
     }
   }
 

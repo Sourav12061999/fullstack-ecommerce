@@ -1,10 +1,8 @@
 import { doc, updateDoc, deleteDoc } from "@firebase/firestore";
 import { db } from "../firebase";
-function Cartcard({ data, index, fulldata, setdata }) {
+function Cartcard({ data, index, fulldata, setdata, signed }) {
   async function plusquantity(id, quantity) {
-    let userdoc = doc(db, "Carts", id);
-    const newField = { quantity: quantity + 1 };
-    await updateDoc(userdoc, newField);
+    let userdoc = doc(db, "users", id);
     let sender = [];
     fulldata.forEach((element, i) => {
       if (i == index) {
@@ -15,15 +13,10 @@ function Cartcard({ data, index, fulldata, setdata }) {
       }
     });
     setdata(sender);
+    await updateDoc(userdoc, { ...signed, cart: sender });
   }
   async function minusquantity(id, quantity) {
-    let userdoc = doc(db, "Carts", id);
-    if (quantity > 1) {
-      const newField = { quantity: quantity - 1 };
-      await updateDoc(userdoc, newField);
-    } else {
-      await deleteDoc(userdoc);
-    }
+    let userdoc = doc(db, "users", id);
     let sender = [];
     fulldata.forEach((element, i) => {
       if (i == index) {
@@ -36,6 +29,7 @@ function Cartcard({ data, index, fulldata, setdata }) {
       }
     });
     setdata(sender);
+    await updateDoc(userdoc, { ...signed, cart: sender });
   }
   return (
     <div className="cart-card">
@@ -47,7 +41,7 @@ function Cartcard({ data, index, fulldata, setdata }) {
         <p className="cart-price">RS.-{data.price * data.quantity}</p>
         <button
           onClick={() => {
-            minusquantity(data.id, data.quantity);
+            minusquantity(signed.id, data.quantity);
           }}
         >
           <h1>-</h1>
@@ -55,7 +49,7 @@ function Cartcard({ data, index, fulldata, setdata }) {
         <p className="cart-quantity">{data.quantity}</p>
         <button
           onClick={() => {
-            plusquantity(data.id, data.quantity);
+            plusquantity(signed.id, data.quantity);
           }}
         >
           <h1>+</h1>

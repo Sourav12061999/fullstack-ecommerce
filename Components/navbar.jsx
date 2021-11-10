@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { collection, getDocs } from "@firebase/firestore";
+import { collection, getDocs, getDoc, doc } from "@firebase/firestore";
 import { useState, useContext } from "react";
 import Cartcard from "./cartcard";
 import { useRouter } from "next/dist/client/router";
@@ -7,15 +7,20 @@ import { Context1, Context2 } from "../pages/_app";
 
 function Navbar() {
   const signed = useContext(Context1);
+  const setsigned = useContext(Context2);
   const router = useRouter();
   let total = 0;
   const [data, setdata] = useState([]);
   const [width, setwidth] = useState("0px");
   const [dis, setdis] = useState("none");
-  const collectionRef = collection(db, "Carts");
   async function getCart() {
-    const cartData = await getDocs(collectionRef);
-    setdata(cartData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    if (signed) {
+      setdata(signed.cart);
+      const docRef = doc(db, "users", signed.id);
+      const docSnap = await getDoc(docRef);
+      // setsigned({})
+      console.log(docSnap.data());
+    }
   }
   return (
     <nav>
@@ -75,12 +80,13 @@ function Navbar() {
             {data.map((el, i) => {
               total = total + el.price * el.quantity;
               return (
-                <div key={el.id}>
+                <div key={i}>
                   <Cartcard
                     index={i}
                     fulldata={data}
                     setdata={setdata}
                     data={el}
+                    signed={signed}
                   />
                 </div>
               );

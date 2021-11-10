@@ -2,7 +2,7 @@ import styles from "../styles/signin.module.css";
 import { useState, useContext } from "react";
 import { db } from "../firebase";
 import { collection, query, where, addDoc, getDocs } from "firebase/firestore";
-import { Context2 } from "./_app";
+import { Context2, Context1 } from "./_app";
 
 function Signupin() {
   const [flip, setflip] = useState("");
@@ -13,6 +13,7 @@ function Signupin() {
   const [inPassword, setinPassword] = useState("");
   const collectionRef = collection(db, "/users");
   const setsigned = useContext(Context2);
+  const signed = useContext(Context1);
   async function Signup() {
     if (upUsername.length > 1 && upEmail.length > 1 && upPassword.length > 1) {
       const q = query(collectionRef, where("email", "==", upEmail));
@@ -24,6 +25,7 @@ function Signupin() {
           username: upUsername,
           email: upEmail,
           password: upPassword,
+          cart: [],
         });
         setflip("rotateY(180deg)");
       }
@@ -52,63 +54,71 @@ function Signupin() {
       <div className={styles.main}>
         <div className={styles.flipcard}>
           <div style={{ transform: flip }} className={styles.flipcardinner}>
-            <div className={styles.flipcardfront}>
-              <h2>Sign up</h2>
-              <input
-                onChange={(e) => {
-                  setupUsername(e.target.value);
-                }}
-                placeholder="username"
-                type="text"
-              />
-              <input
-                onChange={(e) => {
-                  setupEmail(e.target.value);
-                }}
-                placeholder="email"
-                type="email"
-              />
-              <input
-                onChange={(e) => {
-                  setupPassword(e.target.value);
-                }}
-                placeholder="password"
-                type="password"
-              />
-              <button onClick={Signup}>Submit</button>
-              <p
-                onClick={() => {
-                  setflip("rotateY(180deg)");
-                }}
-              >
-                Already have an account? Sign in
-              </p>
-            </div>
-            <div className={styles.flipcardback}>
-              <h2>Sign in</h2>
-              <input
-                onChange={(e) => {
-                  setinEmail(e.target.value);
-                }}
-                placeholder="username"
-                type="email"
-              />
-              <input
-                onChange={(e) => {
-                  setinPassword(e.target.value);
-                }}
-                placeholder="password"
-                type="password"
-              />
-              <button onClick={Signin}>Submit</button>
-              <p
-                onClick={() => {
-                  setflip("");
-                }}
-              >
-                Don't have an account? Sign up
-              </p>
-            </div>
+            {!signed ? (
+              <>
+                <div className={styles.flipcardfront}>
+                  <h2>Sign up</h2>
+                  <input
+                    onChange={(e) => {
+                      setupUsername(e.target.value);
+                    }}
+                    placeholder="username"
+                    type="text"
+                  />
+                  <input
+                    onChange={(e) => {
+                      setupEmail(e.target.value);
+                    }}
+                    placeholder="email"
+                    type="email"
+                  />
+                  <input
+                    onChange={(e) => {
+                      setupPassword(e.target.value);
+                    }}
+                    placeholder="password"
+                    type="password"
+                  />
+                  <button onClick={Signup}>Submit</button>
+                  <p
+                    onClick={() => {
+                      setflip("rotateY(180deg)");
+                    }}
+                  >
+                    Already have an account? Sign in
+                  </p>
+                </div>
+                <div className={styles.flipcardback}>
+                  <h2>Sign in</h2>
+                  <input
+                    onChange={(e) => {
+                      setinEmail(e.target.value);
+                    }}
+                    placeholder="username"
+                    type="email"
+                  />
+                  <input
+                    onChange={(e) => {
+                      setinPassword(e.target.value);
+                    }}
+                    placeholder="password"
+                    type="password"
+                  />
+                  <button onClick={Signin}>Submit</button>
+                  <p
+                    onClick={() => {
+                      setflip("");
+                    }}
+                  >
+                    Don't have an account? Sign up
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div className={styles.signed}>
+                <h2>Thank You for Signing up {signed.username}</h2>
+              </div>
+            )}
           </div>
         </div>
       </div>
