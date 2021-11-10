@@ -15,11 +15,11 @@ function Navbar() {
   const [dis, setdis] = useState("none");
   async function getCart() {
     if (signed) {
-      setdata(signed.cart);
       const docRef = doc(db, "users", signed.id);
       const docSnap = await getDoc(docRef);
-      // setsigned({})
+      setsigned(docSnap.data());
       console.log(docSnap.data());
+      setdata(signed.cart);
     }
   }
   return (

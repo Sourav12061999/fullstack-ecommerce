@@ -1,0 +1,18 @@
+.main {
+  width: 90%;
+  margin: auto;
+  height: calc(99vh - 160px);
+  padding: 0px 2%;
+  padding-top: 2%;
+}
+.main > h2 {
+  text-align: center;
+}
+.main > div {
+  width: 100%;
+  display: flex;
+}
+.form {
+  width: 40%;
+  border: 1px solid red;
+}
